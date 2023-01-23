@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.iotmedicinenotebook.core.domain.Medicine
+import com.example.iotmedicinenotebook.data.room.medicine.MedicineEntity
 import com.example.iotmedicinenotebook.domain.ArgsWriteUseCase
 import com.example.iotmedicinenotebook.domain.FireStoreUseCase
+import com.example.iotmedicinenotebook.domain.MedicineDBUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
     private val fireStoreUseCase: FireStoreUseCase,
-    private val argsWriteUseCase: ArgsWriteUseCase
+    private val argsWriteUseCase: ArgsWriteUseCase,
+    private val medicineDBUseCase : MedicineDBUseCase
 ) : ViewModel() {
 
     private val _medicineData = MutableStateFlow(MedicineUiState.INITIAL)
@@ -40,7 +43,7 @@ class MedicineViewModel @Inject constructor(
         viewModelScope.launch {
             // ローディング開始
             _medicineData.value = _medicineData.value.copy(proceeding = true)
-            val result = fireStoreUseCase(limit)
+            val result = medicineDBUseCase(limit = limit)
 
             result.fold(
                 onSuccess = {
@@ -100,13 +103,13 @@ class MedicineViewModel @Inject constructor(
     }
 
     // 次のページに進むEventを発行する関数
-    fun nextPage(result: Medicine) {
+    fun nextPage(result: MedicineEntity) {
         val newEvents =
             _medicineData.value.events.plus(MedicineUiState.Event.NextPage(result))
         _medicineData.value = _medicineData.value.copy(events = newEvents)
     }
 
-    fun pushArgs(args: Medicine) {
+    fun pushArgs(args: MedicineEntity) {
         viewModelScope.launch {
             // ローディング開始
             _medicineData.value = _medicineData.value.copy(proceeding = true)

@@ -12,12 +12,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.iotmedicinenotebook.core.domain.Medicine
 import com.example.iotmedicinenotebook.core.domain.toDateFormat
+import com.example.iotmedicinenotebook.data.room.medicine.MedicineEntity
 
 
 @Composable
 fun MedicineScreen(
-    nextPage: (medicine: Medicine) -> Unit,
-    medicineList: List<Medicine>,
+    nextPage: (medicine: MedicineEntity) -> Unit,
+    medicineList: List<MedicineEntity>,
     proceeding: Boolean,
     modifier: Modifier
 ) {
@@ -38,7 +39,7 @@ fun MedicineScreen(
 }
 
 @Composable
-fun MedicineButton(medicine: Medicine, nextPage: (medicine: Medicine) -> Unit) {
+fun MedicineButton(medicine: MedicineEntity, nextPage: (medicine: MedicineEntity) -> Unit) {
     Box(
         modifier = Modifier
             .clickable {
@@ -49,25 +50,29 @@ fun MedicineButton(medicine: Medicine, nextPage: (medicine: Medicine) -> Unit) {
     ) {
         Column {
             Text(
-                text = if (medicine.timeStamp != null) {
-                    medicine.timeStamp.toDateFormat()
-                } else {
-                    "日時情報がありません"
-                },
+                text = medicine.timeStamp.toDateFormat(),
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
-            medicine.medicine?.let {
-                Text(
-                    text = if (medicine.medicine.isNotBlank()) {
-                        medicine.medicine.toString()
-                    } else {
-                        "登録されていない薬です。"
-                    },
-                    fontSize = 30.sp,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-            }
+            Text(
+                text = if (medicine.medicineName.isNotBlank()) {
+                    medicine.medicineName.toString()
+                } else {
+                    "登録されていない薬です。"
+                },
+                fontSize = 30.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+            Text(
+                text = if (medicine.difWeight == 0.0) {
+                    "登録を行いますか？"
+                } else {
+                    medicine.medicineName.toString()
+                },
+                fontSize = 30.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
+
     }
 }

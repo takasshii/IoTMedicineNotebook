@@ -6,9 +6,9 @@ import java.util.*
 
 
 data class Medicine(
-    val medicine: String? = null,
-    val weight : Double? = null,
-    val timeStamp: Date? = null,
+    val medicine: String = "読み取りに失敗しました",
+    val weight : Double = 0.0,
+    val timeStamp: Date = Date(),
 ) : Serializable
 
 fun Date.toDateFormat(): String {

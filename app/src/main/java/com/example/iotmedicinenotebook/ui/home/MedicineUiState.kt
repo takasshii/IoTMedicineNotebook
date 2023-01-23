@@ -1,9 +1,10 @@
 package com.example.iotmedicinenotebook.ui.home
 
 import com.example.iotmedicinenotebook.core.domain.Medicine
+import com.example.iotmedicinenotebook.data.room.medicine.MedicineEntity
 
 data class MedicineUiState(
-    val medicineList: List<Medicine>,
+    val medicineList: List<MedicineEntity>,
     val error: String,
     val events: List<Event>,
     val proceeding: Boolean,
@@ -20,6 +21,6 @@ data class MedicineUiState(
     sealed interface Event {
         object Success : Event
         data class Error(val message: String) : Event
-        data class NextPage(val medicineResult: Medicine) : Event
+        data class NextPage(val medicineResult: MedicineEntity) : Event
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.iotmedicinenotebook.core.Dispatcher
 import com.example.iotmedicinenotebook.core.MedicineDispatcher
 import com.example.iotmedicinenotebook.core.domain.Medicine
+import com.example.iotmedicinenotebook.data.room.medicine.MedicineEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -20,9 +21,9 @@ class ArgsRepositoryImpl @Inject constructor(
 
     private val latestArgsMutex = Mutex()
 
-    private var latestArgs: Medicine? = null
+    private var latestArgs: MedicineEntity? = null
 
-    override suspend fun writeMedicineResultArgs(medicine: Medicine): Result<Unit> =
+    override suspend fun writeMedicineResultArgs(medicine: MedicineEntity): Result<Unit> =
         withContext(ioDispatcher) {
             repeat(5) {
                 try {
@@ -37,7 +38,7 @@ class ArgsRepositoryImpl @Inject constructor(
             Result.failure(IOException("引数の書き込みに失敗しました"))
         }
 
-    override suspend fun getMedicineResultArgs(): Result<Medicine> =
+    override suspend fun getMedicineResultArgs(): Result<MedicineEntity> =
         withContext(Dispatchers.IO) {
             try {
                 val args = requireNotNull(latestArgs) {
