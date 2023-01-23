@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.iotmedicinenotebook.core.Medicine
+import com.example.iotmedicinenotebook.core.toDateFormat
 
 
 @Composable
@@ -37,11 +38,13 @@ fun MedicineButton(medicine: Medicine, nextPage: (medicine: Medicine) -> Unit) {
             .padding(horizontal = 10.dp, vertical = 10.dp)
     ) {
         Column {
-            Text(
-                text = medicine.timestamp.toString(),
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Bold
-            )
+            medicine.timeStamp?.let {
+                Text(
+                    text = medicine.timeStamp.toDateFormat(),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Text(
                 text = medicine.medicine.toString(),
                 fontSize = 30.sp,
