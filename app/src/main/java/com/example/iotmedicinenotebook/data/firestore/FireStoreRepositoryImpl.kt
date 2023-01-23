@@ -1,20 +1,22 @@
-package com.example.iotmedicinenotebook.data
+package com.example.iotmedicinenotebook.data.firestore
 
-import android.util.Log
-import com.example.iotmedicinenotebook.core.Medicine
+import com.example.iotmedicinenotebook.core.Dispatcher
+import com.example.iotmedicinenotebook.core.MedicineDispatcher
+import com.example.iotmedicinenotebook.core.domain.Medicine
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FireStoreRepositoryImpl @Inject constructor(
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    @Dispatcher(MedicineDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : FireStoreRepository {
 
     override suspend fun fetchAllMedicineData(limit: Long): Result<List<Medicine>> =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             fetchMedicineData(limit = limit)
         }
 
@@ -24,7 +26,6 @@ class FireStoreRepositoryImpl @Inject constructor(
                 .limit(limit)
                 .get()
                 .addOnSuccessListener { tasks ->
-                    Log.d("RepositoryImpl", "Repository's result size is ${tasks.size()}")
                     val result = tasks.mapNotNull { it.toObject(Medicine::class.java) }
                     continuation.resume(Result.success(result))
                 }

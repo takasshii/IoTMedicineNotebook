@@ -3,7 +3,8 @@ package com.example.iotmedicinenotebook.ui.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.iotmedicinenotebook.core.Medicine
+import com.example.iotmedicinenotebook.core.domain.Medicine
+import com.example.iotmedicinenotebook.domain.ArgsWriteUseCase
 import com.example.iotmedicinenotebook.domain.FireStoreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MedicineViewModel @Inject constructor(
-    private val fireStoreUseCase: FireStoreUseCase
+    private val fireStoreUseCase: FireStoreUseCase,
+    private val argsWriteUseCase: ArgsWriteUseCase
 ) : ViewModel() {
 
     private val _medicineData = MutableStateFlow(MedicineUiState.INITIAL)
@@ -31,12 +33,13 @@ class MedicineViewModel @Inject constructor(
     }
 
     init {
-        Log.d("RepositoryImpl", "ViewModel call getAllMedicine")
         getAllMedicine(limit = 10)
     }
 
     private fun getAllMedicine(limit: Long) {
         viewModelScope.launch {
+            // ローディング開始
+            _medicineData.value = _medicineData.value.copy(proceeding = true)
             val result = fireStoreUseCase(limit)
 
             result.fold(
@@ -51,6 +54,7 @@ class MedicineViewModel @Inject constructor(
                     dispatch(MedicineEvent.UnknownExpectedError(errorMessage = it.toString()))
                 },
             )
+            _medicineData.value = _medicineData.value.copy(proceeding = false)
         }
     }
 
@@ -100,5 +104,26 @@ class MedicineViewModel @Inject constructor(
         val newEvents =
             _medicineData.value.events.plus(MedicineUiState.Event.NextPage(result))
         _medicineData.value = _medicineData.value.copy(events = newEvents)
+    }
+
+    fun pushArgs(args: Medicine) {
+        viewModelScope.launch {
+            // ローディング開始
+            _medicineData.value = _medicineData.value.copy(proceeding = true)
+
+            val result = argsWriteUseCase(args)
+            result.fold(
+                onSuccess = {},
+                onFailure = {
+                    // ViewModelイベント発行
+                    val newEvents =
+                        _medicineData.value.events.plus(MedicineUiState.Event.Error(it.toString()))
+                    // 値をセット
+                    _medicineData.value.copy(events = newEvents)
+                },
+            )
+            // ローディング終了
+            _medicineData.value = _medicineData.value.copy(proceeding = false)
+        }
     }
 }

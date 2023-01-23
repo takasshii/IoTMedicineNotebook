@@ -14,7 +14,7 @@ fun NavController.navigateToDetail(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.detailScreen() {
     composable(
-        route = detailNavigationRoute
+        route = detailNavigationRoute,
     ) {
         DetailRoute()
     }

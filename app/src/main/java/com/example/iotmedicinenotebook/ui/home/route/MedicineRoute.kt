@@ -21,6 +21,7 @@ fun MedicineRoute(
     MedicineScreen(
         nextPage = { item -> viewModel.nextPage(item) },
         medicineList = uiState.medicineList,
+        proceeding = uiState.proceeding,
         modifier = Modifier
     )
 
@@ -37,6 +38,7 @@ fun MedicineRoute(
                     viewModel.consumeEvent(event)
                 }
                 is MedicineUiState.Event.NextPage -> {
+                    viewModel.pushArgs(event.medicineResult)
                     navigateToDetail()
                     // イベントを消費
                     viewModel.consumeEvent(event)

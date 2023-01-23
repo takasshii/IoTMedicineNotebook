@@ -1,4 +1,4 @@
-package com.example.iotmedicinenotebook.core
+package com.example.iotmedicinenotebook.core.domain
 
 import java.io.Serializable
 import java.text.SimpleDateFormat

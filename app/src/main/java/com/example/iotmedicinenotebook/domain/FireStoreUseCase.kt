@@ -1,7 +1,7 @@
 package com.example.iotmedicinenotebook.domain
 
-import com.example.iotmedicinenotebook.core.Medicine
-import com.example.iotmedicinenotebook.data.FireStoreRepository
+import com.example.iotmedicinenotebook.core.domain.Medicine
+import com.example.iotmedicinenotebook.data.firestore.FireStoreRepository
 import javax.inject.Inject
 
 class FireStoreUseCase @Inject constructor(

@@ -1,6 +1,6 @@
 package com.example.iotmedicinenotebook.ui.home
 
-import com.example.iotmedicinenotebook.core.Medicine
+import com.example.iotmedicinenotebook.core.domain.Medicine
 
 sealed interface MedicineEvent {
     data class MedicineList(

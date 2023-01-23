@@ -5,7 +5,6 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.iotmedicinenotebook.core.Medicine
 
 @Composable
 fun rememberMedicineState(

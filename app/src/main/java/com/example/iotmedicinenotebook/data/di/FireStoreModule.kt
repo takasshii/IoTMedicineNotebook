@@ -1,7 +1,7 @@
 package com.example.iotmedicinenotebook.data.di
 
-import com.example.iotmedicinenotebook.data.FireStoreRepository
-import com.example.iotmedicinenotebook.data.FireStoreRepositoryImpl
+import com.example.iotmedicinenotebook.data.firestore.FireStoreRepository
+import com.example.iotmedicinenotebook.data.firestore.FireStoreRepositoryImpl
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Binds
 import dagger.Module
