@@ -52,6 +52,7 @@ class FireStoreRepositoryImpl @Inject constructor(
         return suspendCoroutine { continuation ->
             medicine.timeStamp.let { timeStamp ->
                 firebaseFirestore.collection("users")
+                    .whereEqualTo("medicine", medicine.medicine)
                     .whereLessThan("timeStamp", timeStamp).limit(1)
                     .get()
                     .addOnSuccessListener { tasks ->
@@ -67,19 +68,19 @@ class FireStoreRepositoryImpl @Inject constructor(
 
     private suspend fun fetchNextLatestCustomMedicineList(medicine: MedicineEntity): Result<List<Medicine>> {
         return suspendCoroutine { continuation ->
-            medicine.timeStamp.let { timeStamp ->
                 firebaseFirestore.collection("users")
-                    .whereEqualTo("medicine", medicine.medicineName)
-                    .whereLessThan("timeStamp", timeStamp)
+                    .whereEqualTo("medicine", medicine.medicineNumber)
+                    .whereGreaterThan("timeStamp", medicine.timeStamp)
                     .get()
                     .addOnSuccessListener { tasks ->
+                        Log.d("UseCaseTest", "fetchNextLatestCustomMedicine ${tasks.size()}")
                         val result = tasks.map { it.toObject(Medicine::class.java) }
                         continuation.resume(Result.success(result))
                     }
                     .addOnFailureListener { exception ->
+                        Log.d("UseCaseTest", "fetchNextLatestCustomMedicine is failure ${exception}")
                         continuation.resume(Result.failure(exception))
                     }
             }
-        }
     }
 }

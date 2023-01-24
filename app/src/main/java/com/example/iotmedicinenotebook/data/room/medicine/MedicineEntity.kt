@@ -6,10 +6,11 @@ import java.util.*
 
 @Entity(tableName = "medicine")
 data class MedicineEntity(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val medicineNumber: String,
     val medicineName : String,
     val rawWeight : Double,
     val difWeight : Double,
-    @PrimaryKey
     val timeStamp: Date,
 )

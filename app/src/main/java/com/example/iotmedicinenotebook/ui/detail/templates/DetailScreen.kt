@@ -35,26 +35,22 @@ fun DetailScreen(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Row {
-                    Text(
-                        text = if (!medicine.medicineName.isNullOrBlank()) {
-                            medicine.medicineName.toString()
-                        } else {
-                            "登録されていない薬です。"
-                        },
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                    Text(
-                        text = if (medicine.difWeight == 0.0) {
-                            "登録を行いますか？"
-                        } else {
-                            medicine.medicineName.toString()
-                        },
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
+                Text(
+                    text = medicine.medicineName.ifBlank {
+                        "登録されていない薬です。 ${medicine.medicineNumber}"
+                    },
+                    fontSize = 30.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+                Text(
+                    text = if (medicine.difWeight == 0.0) {
+                        "登録を行いますか？"
+                    } else {
+                        medicine.medicineName.toString()
+                    },
+                    fontSize = 30.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
                 Text(
                     text = "${medicine.rawWeight} g",
                     fontSize = 20.sp,

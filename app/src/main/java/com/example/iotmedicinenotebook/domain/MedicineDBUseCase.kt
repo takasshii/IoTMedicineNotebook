@@ -23,6 +23,7 @@ class MedicineDBUseCase @Inject constructor(
                                     onSuccess = { remoteBeforeMedicine ->
                                         if (remoteBeforeMedicine.isEmpty()) {
                                             MedicineEntity(
+                                                id = 0,
                                                 medicineNumber = remoteMedicine.medicine,
                                                 medicineName = "",
                                                 rawWeight = remoteMedicine.weight,
@@ -31,10 +32,11 @@ class MedicineDBUseCase @Inject constructor(
                                             )
                                         } else {
                                             MedicineEntity(
+                                                id = 0,
                                                 medicineNumber = remoteMedicine.medicine,
                                                 medicineName = "",
                                                 rawWeight = remoteMedicine.weight,
-                                                difWeight = remoteMedicine.weight - remoteBeforeMedicine.first().weight,
+                                                difWeight =  remoteBeforeMedicine.first().weight - remoteMedicine.weight,
                                                 timeStamp = remoteMedicine.timeStamp,
                                             )
                                         }
@@ -57,6 +59,7 @@ class MedicineDBUseCase @Inject constructor(
                                     onSuccess = { remoteBeforeMedicine ->
                                         if (remoteBeforeMedicine.isEmpty()) {
                                             MedicineEntity(
+                                                id = 0,
                                                 medicineNumber = remoteMedicine.medicine,
                                                 // ここで名前を問い合わせる
                                                 medicineName = "",
@@ -66,11 +69,12 @@ class MedicineDBUseCase @Inject constructor(
                                             )
                                         } else {
                                             MedicineEntity(
+                                                id = 0,
                                                 medicineNumber = remoteMedicine.medicine,
                                                 // ここで名前を問い合わせる
                                                 medicineName = "",
                                                 rawWeight = remoteMedicine.weight,
-                                                difWeight = remoteMedicine.weight - remoteBeforeMedicine.first().weight,
+                                                difWeight = remoteBeforeMedicine.first().weight - remoteMedicine.weight,
                                                 timeStamp = remoteMedicine.timeStamp,
                                             )
                                         }

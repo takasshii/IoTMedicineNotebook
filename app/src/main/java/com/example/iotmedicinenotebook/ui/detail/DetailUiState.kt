@@ -11,6 +11,7 @@ data class DetailUiState(
     companion object {
         val INITIAL = DetailUiState(
             medicine = MedicineEntity(
+                id = 0,
                 medicineNumber = "測定エラーが発生しました。",
                 medicineName = "未登録です。",
                 rawWeight = 0.0,

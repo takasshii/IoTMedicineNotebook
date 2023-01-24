@@ -13,6 +13,6 @@ data class Medicine(
 
 fun Date.toDateFormat(): String {
     val locale = Locale.JAPAN
-    val sdf2 = SimpleDateFormat("HH:mm", locale)
-    return sdf2.format(Date())
+    val sdf2 = SimpleDateFormat("yyyy/MM/dd HH:mm", locale)
+    return sdf2.format(this)
 }

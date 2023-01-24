@@ -55,10 +55,8 @@ fun MedicineButton(medicine: MedicineEntity, nextPage: (medicine: MedicineEntity
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = if (medicine.medicineName.isNotBlank()) {
-                    medicine.medicineName.toString()
-                } else {
-                    "登録されていない薬です。"
+                text = medicine.medicineName.ifBlank {
+                    "登録されていない薬です。 ${medicine.medicineNumber}"
                 },
                 fontSize = 30.sp,
                 modifier = Modifier.padding(top = 4.dp)
@@ -67,7 +65,7 @@ fun MedicineButton(medicine: MedicineEntity, nextPage: (medicine: MedicineEntity
                 text = if (medicine.difWeight == 0.0) {
                     "登録を行いますか？"
                 } else {
-                    medicine.medicineName.toString()
+                    medicine.difWeight.toString()
                 },
                 fontSize = 30.sp,
                 modifier = Modifier.padding(top = 4.dp)

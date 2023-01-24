@@ -10,16 +10,16 @@ interface MedicineDAO {
     @Insert
     fun insert(medicineList: List<MedicineEntity>)
 
-    @Query("select * from medicine order by timeStamp asc")
+    @Query("select * from medicine order by timeStamp desc")
     fun getAll(): List<MedicineEntity>
 
     @Query("select * from medicine WHERE medicineName = :name")
     fun getCustomMedicine(name : String): List<MedicineEntity>
 
-    @Query("select * from medicine WHERE medicineName = :name order by timeStamp asc LIMIT 1")
+    @Query("select * from medicine WHERE medicineName = :name order by timeStamp desc LIMIT 1")
     fun getLatestCustomMedicine(name : String): MedicineEntity
 
-    @Query("select * from medicine order by timeStamp asc LIMIT 1")
+    @Query("select * from medicine order by timeStamp desc LIMIT 1")
     fun getLatestMedicine(): List<MedicineEntity>
 
     @Delete
