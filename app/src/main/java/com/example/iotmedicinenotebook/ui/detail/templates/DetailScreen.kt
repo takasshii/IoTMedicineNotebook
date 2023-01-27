@@ -1,6 +1,7 @@
 package com.example.iotmedicinenotebook.ui.detail.templates
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
@@ -12,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.iotmedicinenotebook.core.domain.Medicine
 import com.example.iotmedicinenotebook.core.domain.toDateFormat
+import com.example.iotmedicinenotebook.data.room.medicine.MedicineEntity
 
 @Composable
 fun DetailScreen(
-    medicine: Medicine,
+    medicine: MedicineEntity,
     proceeding: Boolean,
     modifier: Modifier
 ) {
@@ -30,34 +31,36 @@ fun DetailScreen(
         } else {
             Column {
                 Text(
-                    text = if (medicine.timeStamp != null) {
-                        medicine.timeStamp.toDateFormat()
-                    } else {
-                        "日時情報がありません"
-                    },
+                    text = medicine.timeStamp.toDateFormat(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = if (medicine.weight != null) {
-                        medicine.weight.toString()
-                    } else {
-                        "正確に重量を測れませんでした"
+                    text = medicine.medicineName.ifBlank {
+                        "登録されていない薬です。 ${medicine.medicineNumber}"
                     },
+                    fontSize = 30.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+                Text(
+                    text = if (medicine.difWeight == 0.0) {
+                        "登録を行いますか？"
+                    } else {
+                        medicine.medicineName.toString()
+                    },
+                    fontSize = 30.sp,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+                Text(
+                    text = "${medicine.rawWeight} g",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
-                medicine.medicine?.let {
-                    Text(
-                        text = if (medicine.medicine.isNotBlank()) {
-                            medicine.medicine.toString()
-                        } else {
-                            "登録されていない薬です。"
-                        },
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(top = 4.dp)
-                    )
-                }
+                Text(
+                    text = medicine.medicineNumber,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
